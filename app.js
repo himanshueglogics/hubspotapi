@@ -8,7 +8,7 @@ app.use(bodyParser.json()); // HubSpot webhook sends JSON
 const clientId = 'd47e06e6-9156-4495-bc9c-efba677a610c';
 const clientSecret = '45518836-399f-49cf-89a2-0e43924ca323';
 // Important: Must match the registered redirect URI in HubSpot and in OAuth URL below!
-const redirectUri = 'http://localhost:8000/oauth/callback';
+const redirectUri = 'https://hubspotapi.onrender.com/oauth/callback';
 
 // In-memory store for demonstration only:
 // In production, store these per user/portal in a DB!
@@ -17,7 +17,7 @@ let refreshToken = '';
 
 // Start OAuth install process
 app.get('/install', (req, res) => {
-    const authUrl = `https://app-na2.hubspot.com/oauth/authorize?client_id=d47e06e6-9156-4495-bc9c-efba677a610c&redirect_uri=http://localhost:8000/oauth/callback&scope=crm.objects.contacts.write%20automation%20oauth%20crm.objects.contacts.read`;
+    const authUrl = `https://app-na2.hubspot.com/oauth/authorize?client_id=d47e06e6-9156-4495-bc9c-efba677a610c&redirect_uri=https://hubspotapi.onrender.com/oauth/callback&scope=crm.objects.contacts.write%20automation%20oauth%20crm.objects.contacts.read`;
     res.redirect(authUrl);
 });
 
