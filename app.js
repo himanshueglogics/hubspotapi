@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.json()); // HubSpot webhook sends JSON
 
 const clientId = 'ffd09c8f-db8c-440f-a9a8-297404277b15';
-const clientSecret = 'ffd09c8f-db8c-440f-a9a8-297404277b15';
+const clientSecret = '77e2146b-a1fd-463f-b434-bfb2b69ee8ff';
 const url= process.env.BASE_URL; // Your app's callback URL
 console.log('BASE_URL:', url);
 // Important: Must match the registered redirect URI in HubSpot and in OAuth URL below!
