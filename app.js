@@ -3,7 +3,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser'); // For parsing workflow JSON properly
 const Hubspot = require('@hubspot/api-client');
 
-const hubspotClient = new hubspot.Client({"developerApiKey":"na2-fbde-3ecf-4c48-935d-97425ba80209"});
+const hubspotClient = new Hubspot.Client({"developerApiKey":"na2-fbde-3ecf-4c48-935d-97425ba80209"});
 const app = express();
 app.use(bodyParser.json()); // HubSpot webhook sends JSON
 
