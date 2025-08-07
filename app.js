@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser'); // For parsing workflow JSON properly
@@ -9,8 +10,10 @@ app.use(bodyParser.json()); // HubSpot webhook sends JSON
 
 const clientId = 'd47e06e6-9156-4495-bc9c-efba677a610c';
 const clientSecret = '45518836-399f-49cf-89a2-0e43924ca323';
+const url= process.env.BASE_URL; // Your app's callback URL
+console.log('BASE_URL:', url);
 // Important: Must match the registered redirect URI in HubSpot and in OAuth URL below!
-const redirectUri = 'https://hubspotapi.onrender.com/oauth/callback';
+const redirectUri = `${url}/oauth/callback`;
 
 // In-memory store for demonstration only:
 // In production, store these per user/portal in a DB!
@@ -19,7 +22,7 @@ let refreshToken = '';
 
 // Start OAuth install process
 app.get('/install', (req, res) => {
-    const authUrl = `https://app-na2.hubspot.com/oauth/authorize?client_id=d47e06e6-9156-4495-bc9c-efba677a610c&redirect_uri=https://hubspotapi.onrender.com/oauth/callback&scope=crm.objects.contacts.write%20automation%20oauth%20crm.objects.contacts.read`;
+    const authUrl = `https://app-na2.hubspot.com/oauth/authorize?client_id=d47e06e6-9156-4495-bc9c-efba677a610c&redirect_uri=${url}/oauth/callback&scope=crm.objects.contacts.write%20automation%20oauth%20crm.objects.contacts.read`;
     res.redirect(authUrl);
 });
 
@@ -157,7 +160,7 @@ async function registerWorkflowExtension(accessToken) {
 // };
 
 const PublicActionDefinitionEgg = {
-  actionUrl: "https://hubspotapi.onrender.com/workflow/trigger",
+  actionUrl: `${url}/workflow/trigger`,
   archivedAt: 0,
   published: true,
   inputFields: [
@@ -265,8 +268,8 @@ const PublicActionDefinitionEgg = {
     //   }
     // );
     const apiResponse = await hubspotClient.automation.actions.definitionsApi.create(appId, PublicActionDefinitionEgg);
-    console.log(JSON.stringify(apiResponse, null, 2));
-    console.log('Direct axios registration success:', apiResponse);
+    // console.log(JSON.stringify(apiResponse, null, 2));
+    console.log('Direct axios registration success:', apiResponse.data);
     // console.log('Workflow extension created:', JSON.stringify(apiResponse, null, 2));
     // Optionally, you can store the created action definition ID for later use
     const actionId = apiResponse.id;
@@ -311,4 +314,4 @@ app.post('/workflow/trigger', async (req, res) => {
     }
 });
 
-app.listen(8000, () => console.log('OAuth backend running at http://localhost:8000'));
+app.listen(8000, () => console.log('OAuth backend running at http://localhost:8000/install'));
