@@ -60,105 +60,7 @@ app.get('/oauth/callback', async (req, res) => {
 });
 
 async function registerWorkflowExtension(accessToken) {
-    // Same extension can generally only be registered once per portal.
-    // Use try/catch to handle "already exists" errors gracefully.
-    // const payload = {
-    //     enabled: true,
-    //     name: "Send SMS/WhatsApp via SendMetrix",
-    //     description: "Send SMS or WhatsApp messages via SendMetrix gateway from HubSpot workflows.",
-    //     actions: [
-    //         {
-    //             id: "send_sms_whatsapp",
-    //             name: "Send SMS/WhatsApp Message",
-    //             type: "STANDARD",
-    //             labels: { en: "Send SMS/WhatsApp" },
-    //             inputFields: [
-    //                 {
-    //                     type: "enumeration",
-    //                     fieldType: "select",
-    //                     name: "channel",
-    //                     label: "Message Channel",
-    //                     description: "Choose SMS or WhatsApp",
-    //                     options: [
-    //                         { label: "SMS", value: "sms" },
-    //                         { label: "WhatsApp", value: "whatsapp" }
-    //                     ],
-    //                     required: true,
-    //                     groupName: "message"
-    //                 },
-    //                 {
-    //                     type: "string",
-    //                     fieldType: "text",
-    //                     name: "message",
-    //                     label: "Message Content",
-    //                     description: "Use tokens, e.g. {{ contact.firstname }}",
-    //                     required: true,
-    //                     groupName: "message"
-    //                 },
-    //                 {
-    //                     type: "string",
-    //                     fieldType: "text",
-    //                     name: "phone_number",
-    //                     label: "Phone Number",
-    //                     description: "Contact's phone number or contact property with phone.",
-    //                     required: true,
-    //                     groupName: "message"
-    //                 }
-    //             ],
-    //             outputFields: [
-    //                 {
-    //                     type: "string",
-    //                     fieldType: "text",
-    //                     name: "status",
-    //                     label: "Send Status"
-    //                 }
-    //             ]
-    //         }
-    //     ],
-    //     callbackUrl: "http://localhost:8000/workflow/trigger"
-    // };
-
-//     const actionDefinition = {
-//   name: "Send SMS/WhatsApp via SendMetrix",
-//   description: "Custom action to send SMS or WhatsApp messages via SendMetrix",
-//   inputFields: [
-//     {
-//       name: "channel",
-//       label: "Channel",
-//       description: "Choose SMS or WhatsApp",
-//       type: "enumeration",
-//       options: [
-//         { label: "SMS", value: "sms" },
-//         { label: "WhatsApp", value: "whatsapp" }
-//       ],
-//       required: true,
-//     },
-//     {
-//       name: "message",
-//       label: "Message Content",
-//       description: "Text message with tokens, e.g. {{ contact.firstname }}",
-//       type: "string",
-//       required: true
-//     },
-//     {
-//       name: "phone_number",
-//       label: "Phone Number",
-//       description: "Phone number or contact property",
-//       type: "string",
-//       required: true
-//     }
-//   ],
-//   outputFields: [
-//     {
-//       name: "status",
-//       label: "Send Status",
-//       type: "string"
-//     }
-//   ],
-//   callbackUrl: "https://yourdomain.com/workflow/trigger",
-//   appActionId: "send_sms_whatsapp_001"
-// };
-
+   
 const PublicActionDefinitionEgg = {
   "functions": [],
   "actionUrl": `${url}/workflow/trigger`,
@@ -179,7 +81,7 @@ const PublicActionDefinitionEgg = {
         "channel": "Channel",
         "message": "Message"
       },
-      "actionName": "Send SMS/WhatsApp",
+      "actionName": "Send SMS/WhatsApp Message Him",
       "actionCardContent": "This action sends an SMS or WhatsApp message using SendMetrix"
     }
   },
