@@ -63,7 +63,7 @@ async function registerWorkflowExtension(accessToken) {
    
 const PublicActionDefinitionEgg = {
   "functions": [],
-  "actionUrl": `${url}/workflow/trigger`,
+  "actionUrl": "https://hubspotapi.onrender.com/workflow/trigger",
   "published": true,
   "labels": {
     "en": {
@@ -81,7 +81,7 @@ const PublicActionDefinitionEgg = {
         "channel": "Channel",
         "message": "Message"
       },
-      "actionName": "Send SMS/WhatsApp Message Him",
+      "actionName": "Send SMS/WhatsApp",
       "actionCardContent": "This action sends an SMS or WhatsApp message using SendMetrix"
     }
   },
@@ -179,6 +179,7 @@ const PublicActionDefinitionEgg = {
 
 
 
+
    
 
     try {
@@ -205,7 +206,7 @@ const PublicActionDefinitionEgg = {
     console.log('Workflow extension created:', JSON.stringify(apiResponse, null, 2));
     // Optionally, you can store the created action definition ID for later use
     const actionId = apiResponse.id;
-
+      console.log('Action ID:', actionId);
         // console.log("Workflow extension registered:", reg.data);
         return true;
     } catch (error) {
