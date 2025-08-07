@@ -269,8 +269,8 @@ const PublicActionDefinitionEgg = {
     // );
     const apiResponse = await hubspotClient.automation.actions.definitionsApi.create(appId, PublicActionDefinitionEgg);
     // console.log(JSON.stringify(apiResponse, null, 2));
-    console.log('Direct axios registration success:', apiResponse.data);
-    // console.log('Workflow extension created:', JSON.stringify(apiResponse, null, 2));
+    // console.log('Direct axios registration success:', apiResponse);
+    console.log('Workflow extension created:', JSON.stringify(apiResponse, null, 2));
     // Optionally, you can store the created action definition ID for later use
     const actionId = apiResponse.id;
 
