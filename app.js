@@ -157,7 +157,7 @@ async function registerWorkflowExtension(accessToken) {
 // };
 
 const PublicActionDefinitionEgg = {
-  actionUrl: "https://yourdomain.com/workflow/trigger",
+  actionUrl: "https://hubspotapi.onrender.com/workflow/trigger",
   archivedAt: 0,
   published: true,
   inputFields: [
