@@ -2,6 +2,8 @@ const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser'); // For parsing workflow JSON properly
 const Hubspot = require('@hubspot/api-client');
+
+const hubspotClient = new hubspot.Client({"developerApiKey":"na2-fbde-3ecf-4c48-935d-97425ba80209"});
 const app = express();
 app.use(bodyParser.json()); // HubSpot webhook sends JSON
 
@@ -113,46 +115,134 @@ async function registerWorkflowExtension(accessToken) {
     //     callbackUrl: "http://localhost:8000/workflow/trigger"
     // };
 
-    const actionDefinition = {
-  name: "Send SMS/WhatsApp via SendMetrix",
-  description: "Custom action to send SMS or WhatsApp messages via SendMetrix",
+//     const actionDefinition = {
+//   name: "Send SMS/WhatsApp via SendMetrix",
+//   description: "Custom action to send SMS or WhatsApp messages via SendMetrix",
+//   inputFields: [
+//     {
+//       name: "channel",
+//       label: "Channel",
+//       description: "Choose SMS or WhatsApp",
+//       type: "enumeration",
+//       options: [
+//         { label: "SMS", value: "sms" },
+//         { label: "WhatsApp", value: "whatsapp" }
+//       ],
+//       required: true,
+//     },
+//     {
+//       name: "message",
+//       label: "Message Content",
+//       description: "Text message with tokens, e.g. {{ contact.firstname }}",
+//       type: "string",
+//       required: true
+//     },
+//     {
+//       name: "phone_number",
+//       label: "Phone Number",
+//       description: "Phone number or contact property",
+//       type: "string",
+//       required: true
+//     }
+//   ],
+//   outputFields: [
+//     {
+//       name: "status",
+//       label: "Send Status",
+//       type: "string"
+//     }
+//   ],
+//   callbackUrl: "https://yourdomain.com/workflow/trigger",
+//   appActionId: "send_sms_whatsapp_001"
+// };
+
+const PublicActionDefinitionEgg = {
+  actionUrl: "https://yourdomain.com/workflow/trigger",
+  archivedAt: 0,
+  published: true,
   inputFields: [
     {
-      name: "channel",
-      label: "Channel",
-      description: "Choose SMS or WhatsApp",
-      type: "enumeration",
-      options: [
-        { label: "SMS", value: "sms" },
-        { label: "WhatsApp", value: "whatsapp" }
-      ],
-      required: true,
+      isRequired: true,
+      automationFieldType: "string",
+      typeDefinition: {
+        name: "phone_number",
+        label: "Phone Number",
+        type: "string",
+        fieldType: "text",
+        helpText: "The destination phone number. Can use a contact property.",
+        description: "Contact's phone number"
+      },
+      supportedValueTypes: ["STATIC_VALUE"]
     },
     {
-      name: "message",
-      label: "Message Content",
-      description: "Text message with tokens, e.g. {{ contact.firstname }}",
-      type: "string",
-      required: true
+      isRequired: true,
+      automationFieldType: "string",
+      typeDefinition: {
+        name: "channel",
+        label: "Channel",
+        type: "enumeration",
+        fieldType: "select",
+        options: [
+          { label: "SMS", value: "sms" },
+          { label: "WhatsApp", value: "whatsapp" }
+        ],
+        helpText: "Choose SMS or WhatsApp",
+        description: "Select delivery channel"
+      },
+      supportedValueTypes: ["STATIC_VALUE"]
     },
     {
-      name: "phone_number",
-      label: "Phone Number",
-      description: "Phone number or contact property",
-      type: "string",
-      required: true
+      isRequired: true,
+      automationFieldType: "string",
+      typeDefinition: {
+        name: "message",
+        label: "Message",
+        type: "string",
+        fieldType: "text",
+        helpText: "Your message. Supports tokens like {{ contact.firstname }}.",
+        description: "Text content of the message"
+      },
+      supportedValueTypes: ["STATIC_VALUE"]
     }
   ],
   outputFields: [
     {
-      name: "status",
-      label: "Send Status",
-      type: "string"
+      typeDefinition: {
+        name: "status",
+        label: "Send Status",
+        type: "string",
+        fieldType: "text",
+        helpText: "Message delivery status",
+        description: "Status of message sending"
+      }
     }
   ],
-  callbackUrl: "https://yourdomain.com/workflow/trigger",
-  appActionId: "send_sms_whatsapp_001"
+  objectTypes: ["CONTACT"],
+  functions: [],
+  inputFieldDependencies: [],
+  executionRules: [],
+  labels: {
+    en: {
+      actionName: "Send SMS/WhatsApp",
+      actionDescription: "Send an SMS or WhatsApp message from a workflow",
+      inputFieldLabels: {
+        phone_number: "Phone Number",
+        channel: "Channel",
+        message: "Message"
+      },
+      outputFieldLabels: {
+        status: "Send Status"
+      },
+      inputFieldDescriptions: {
+        phone_number: "Contact's phone number",
+        channel: "Which channel to use",
+        message: "Message text with optional personalization tokens"
+      },
+      actionCardContent: "This action sends an SMS or WhatsApp message using SendMetrix"
+    }
+  }
 };
+
 
    
 
@@ -164,20 +254,20 @@ async function registerWorkflowExtension(accessToken) {
         // );
          const appId = 17385118; // your HubSpot app ID, numeric
     
-    const response = await axios.post(
-      `https://api.hubapi.com/automation/v4/actions/${appId}`,
-      actionDefinition,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-    console.log('Direct axios registration success:', response.data);
-    return true;
-
-    console.log('Workflow extension created:', JSON.stringify(apiResponse, null, 2));
+    // const response = await axios.post(
+    //   `https://api.hubapi.com/automation/v4/actions/${appId}`,
+    //   actionDefinition,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //       'Content-Type': 'application/json'
+    //     }
+    //   }
+    // );
+    const apiResponse = await hubspotClient.automation.actions.definitionsApi.create(appId, PublicActionDefinitionEgg);
+    console.log(JSON.stringify(apiResponse, null, 2));
+    console.log('Direct axios registration success:', apiResponse);
+    // console.log('Workflow extension created:', JSON.stringify(apiResponse, null, 2));
     // Optionally, you can store the created action definition ID for later use
     const actionId = apiResponse.id;
 
