@@ -46,7 +46,7 @@ app.get('/oauth/callback', async (req, res) => {
 
         accessToken = tokenResponse.data.access_token;
         refreshToken = tokenResponse.data.refresh_token;
-        const appId = 17385118;
+        const appId = 17458419;
         console.log('OAuth successful, tokens obtained:', { accessToken, refreshToken });
         // Register the workflow extension with the user's token
         const ok = await registerWorkflowExtension(accessToken, appId); // Your HubSpot app ID, numeric
