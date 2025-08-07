@@ -8,8 +8,8 @@ const Hubspot = require('@hubspot/api-client');
 const app = express();
 app.use(bodyParser.json()); // HubSpot webhook sends JSON
 
-const clientId = 'ffd09c8f-db8c-440f-a9a8-297404277b15';
-const clientSecret = '77e2146b-a1fd-463f-b434-bfb2b69ee8ff';
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
 const url= process.env.BASE_URL; // Your app's callback URL
 console.log('BASE_URL:', url);
 // Important: Must match the registered redirect URI in HubSpot and in OAuth URL below!
@@ -46,7 +46,7 @@ app.get('/oauth/callback', async (req, res) => {
 
         accessToken = tokenResponse.data.access_token;
         refreshToken = tokenResponse.data.refresh_token;
-        const appId = 17458419;
+        const appId = process.env.APP_ID || 17458419; // Use environment variable or default to your app ID
         console.log('OAuth successful, tokens obtained:', { accessToken, refreshToken });
         // Register the workflow extension with the user's token
         const ok = await registerWorkflowExtension(accessToken, appId); // Your HubSpot app ID, numeric
