@@ -160,91 +160,121 @@ async function registerWorkflowExtension(accessToken) {
 // };
 
 const PublicActionDefinitionEgg = {
-  actionUrl: `${url}/workflow/trigger`,
-  archivedAt: 0,
-  published: true,
-  inputFields: [
-    {
-      isRequired: true,
-      automationFieldType: "string",
-      typeDefinition: {
-        name: "phone_number",
-        label: "Phone Number",
-        type: "string",
-        fieldType: "text",
-        helpText: "The destination phone number. Can use a contact property.",
-        description: "Contact's phone number"
+  "functions": [],
+  "actionUrl": `${url}/workflow/trigger`,
+  "published": true,
+  "labels": {
+    "en": {
+      "inputFieldDescriptions": {
+        "phone_number": "Contact's phone number",
+        "channel": "Which channel to use",
+        "message": "Message text with optional personalization tokens"
       },
-      supportedValueTypes: ["STATIC_VALUE"]
+      "outputFieldLabels": {
+        "status": "Send Status"
+      },
+      "actionDescription": "Send an SMS or WhatsApp message from a workflow",
+      "inputFieldLabels": {
+        "phone_number": "Phone Number",
+        "channel": "Channel",
+        "message": "Message"
+      },
+      "actionName": "Send SMS/WhatsApp",
+      "actionCardContent": "This action sends an SMS or WhatsApp message using SendMetrix"
+    }
+  },
+  "inputFields": [
+    {
+      "isRequired": true,
+      "automationFieldType": "string",
+      "typeDefinition": {
+        "helpText": "The destination phone number. Can use a contact property.",
+        "referencedObjectType": null,
+        "name": "phone_number",
+        "options": [],
+        "description": "Contact's phone number",
+        "externalOptionsReferenceType": null,
+        "label": "Phone Number",
+        "type": "string",
+        "fieldType": "text",
+        "optionsUrl": null,
+        "externalOptions": false
+      },
+      "supportedValueTypes": [
+        "STATIC_VALUE"
+      ]
     },
     {
-      isRequired: true,
-      automationFieldType: "string",
-      typeDefinition: {
-        name: "channel",
-        label: "Channel",
-        type: "enumeration",
-        fieldType: "select",
-        options: [
-          { label: "SMS", value: "sms" },
-          { label: "WhatsApp", value: "whatsapp" }
+      "isRequired": true,
+      "automationFieldType": "string",
+      "typeDefinition": {
+        "helpText": "Choose SMS or WhatsApp",
+        "referencedObjectType": null,
+        "name": "channel",
+        "options": [
+          {
+            "label": "SMS",
+            "value": "sms"
+          },
+          {
+            "label": "WhatsApp",
+            "value": "whatsapp"
+          }
         ],
-        helpText: "Choose SMS or WhatsApp",
-        description: "Select delivery channel"
+        "description": "Select delivery channel",
+        "externalOptionsReferenceType": null,
+        "label": "Channel",
+        "type": "enumeration",
+        "fieldType": "select",
+        "optionsUrl": null,
+        "externalOptions": false
       },
-      supportedValueTypes: ["STATIC_VALUE"]
+      "supportedValueTypes": [
+        "STATIC_VALUE"
+      ]
     },
     {
-      isRequired: true,
-      automationFieldType: "string",
-      typeDefinition: {
-        name: "message",
-        label: "Message",
-        type: "string",
-        fieldType: "text",
-        helpText: "Your message. Supports tokens like {{ contact.firstname }}.",
-        description: "Text content of the message"
+      "isRequired": true,
+      "automationFieldType": "string",
+      "typeDefinition": {
+        "helpText": "Your message. Supports tokens like {{ contact.firstname }}.",
+        "referencedObjectType": null,
+        "name": "message",
+        "options": [],
+        "description": "Text content of the message",
+        "externalOptionsReferenceType": null,
+        "label": "Message",
+        "type": "string",
+        "fieldType": "text",
+        "optionsUrl": null,
+        "externalOptions": false
       },
-      supportedValueTypes: ["STATIC_VALUE"]
+      "supportedValueTypes": [
+        "STATIC_VALUE"
+      ]
     }
   ],
-  outputFields: [
+  "outputFields": [
     {
-      typeDefinition: {
-        name: "status",
-        label: "Send Status",
-        type: "string",
-        fieldType: "text",
-        helpText: "Message delivery status",
-        description: "Status of message sending"
+      "typeDefinition": {
+        "helpText": "Message delivery status",
+        "referencedObjectType": null,
+        "name": "status",
+        "options": [],
+        "description": "Status of message sending",
+        "externalOptionsReferenceType": null,
+        "type": "string",
+        "fieldType": "text",
+        "optionsUrl": null,
+        "externalOptions": false
       }
     }
   ],
-  objectTypes: ["CONTACT"],
-  functions: [],
-  inputFieldDependencies: [],
-  executionRules: [],
-  labels: {
-    en: {
-      actionName: "Send SMS/WhatsApp",
-      actionDescription: "Send an SMS or WhatsApp message from a workflow",
-      inputFieldLabels: {
-        phone_number: "Phone Number",
-        channel: "Channel",
-        message: "Message"
-      },
-      outputFieldLabels: {
-        status: "Send Status"
-      },
-      inputFieldDescriptions: {
-        phone_number: "Contact's phone number",
-        channel: "Which channel to use",
-        message: "Message text with optional personalization tokens"
-      },
-      actionCardContent: "This action sends an SMS or WhatsApp message using SendMetrix"
-    }
-  }
+  "objectTypes": [
+    "CONTACT"
+  ]
 };
+
 
 
    
