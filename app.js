@@ -295,7 +295,8 @@ async function registerWorkflowExtension(accessToken, appId) {
 
     const response = await hubspotClient.automation.actions.definitionsApi.create(appId, PublicActionDefinitionEgg);
 
-    console.log('Workflow extension registered:', response.data);
+    console.log('Workflow extension registered:', response);
+    res.send('Workflow extension registered successfully!', response);
     return true;
   } catch (error) {
     console.error('Error registering workflow extension:', {
