@@ -271,7 +271,7 @@ const PublicActionDefinitionEgg = {
     // Optionally, you can store the created action definition ID for later use
     const actionId = apiResponse.id;
 
-        console.log("Workflow extension registered:", reg.data);
+        // console.log("Workflow extension registered:", reg.data);
         return true;
     } catch (error) {
         console.error('Extension registration error:', error.response?.data || error.message);
