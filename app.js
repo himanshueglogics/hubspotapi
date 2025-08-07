@@ -165,7 +165,7 @@ async function registerWorkflowExtension(accessToken) {
          const appId = 17385118; // your HubSpot app ID, numeric
     
     const response = await axios.post(
-      `https://api.hubapi.com/automation/v4/extensions/actions`,
+      `https://api.hubapi.com/automation/v4/actions/${appId}`,
       actionDefinition,
       {
         headers: {
