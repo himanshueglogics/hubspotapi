@@ -49,16 +49,16 @@ app.get('/oauth/callback', async (req, res) => {
         const appId = process.env.APP_ID || 17458419; // Use environment variable or default to your app ID
         console.log('OAuth successful, tokens obtained:', { accessToken, refreshToken });
         // Register the workflow extension with the user's token
-        let ok = false;
-        setTimeout(async () => {
-          console.log('Registering workflow extension...');
-          ok = await registerWorkflowExtension(accessToken, appId); // Your HubSpot app ID, numeric
-        }, 10000); // Delay to ensure tokens are ready
-        if (ok) {
-            res.send('App installed and workflow extension registered! Go to HubSpot Workflows to use your custom action.');
-        } else {
-            res.status(500).send('Workflow extension registration failed, check logs.');
-        }
+        // let ok = false;
+        // setTimeout(async () => {
+        //   console.log('Registering workflow extension...');
+        //   ok = await registerWorkflowExtension(accessToken, appId); // Your HubSpot app ID, numeric
+        // }, 10000); // Delay to ensure tokens are ready
+        // if (ok) {
+        //     res.send('App installed and workflow extension registered! Go to HubSpot Workflows to use your custom action.');
+        // } else {
+        //     res.status(500).send('Workflow extension registration failed, check logs.');
+        // }
     } catch (error) {
         console.error('OAuth failed', error.response?.data || error.message);
         res.status(500).send("OAuth failed: " + (error.response?.data?.message || error.message));
