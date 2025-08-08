@@ -59,6 +59,7 @@ app.get('/oauth/callback', async (req, res) => {
         // } else {
         //     res.status(500).send('Workflow extension registration failed, check logs.');
         // }
+         res.status(200).send('App installed. Check logs for details.');
     } catch (error) {
         console.error('OAuth failed', error.response?.data || error.message);
         res.status(500).send("OAuth failed: " + (error.response?.data?.message || error.message));
