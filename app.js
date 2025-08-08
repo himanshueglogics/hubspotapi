@@ -469,9 +469,9 @@ async function registerWorkflowExtension(accessToken, appId) {
 // https://hubspotapi.onrender.com/workflow/trigger
 app.post('/workflow/trigger', async (req, res) => {
     // You must use bodyParser to parse JSON, as above!
-    const { inputs, objectId: contactId } = req.body; 
+    const { inputs, objectId: contactId } = req.body[0]; 
     // Modern HubSpot uses objectId for contact!
-    console.log('Workflow trigger received:', req.body);
+    console.log('Workflow trigger received:', req.body, req.body.inputs, req.body.objectId, req.body.inputs, req.body.objectId);
     // In production, fetch stored tokens and keys for the portal/user!
     try {
         // 1. Fetch contact details (tokens, phone, etc.)
