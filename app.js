@@ -465,7 +465,7 @@ async function registerWorkflowExtension(accessToken, appId) {
 //     }
 // }
 
-function singatureVerification(request) {
+function singatureV3Verification(request) {
   
   const { url, method, body, headers, hostname } = request;
 
@@ -516,9 +516,9 @@ app.post('/workflow/trigger', async (req, res) => {
     // You must use bodyParser to parse JSON, as above!
     const { inputs, objectId: contactId } = req.body[0]; 
     // Modern HubSpot uses objectId for contact!
-    
+
     // In production, fetch stored tokens and keys for the portal/user!
-    const isValid = singatureVerification(req);
+    const isValid = singatureV3Verification(req);
     if (!isValid) {
         console.log('Invalid signature, rejecting request');
         return res.status(401).json({ error: 'Unauthorized' });
