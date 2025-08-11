@@ -3,7 +3,7 @@ const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser'); // For parsing workflow JSON properly
 const Hubspot = require('@hubspot/api-client');
-
+const crypto = require('crypto');
 // const hubspotClient = new Hubspot.Client({"developerApiKey":"na2-fbde-3ecf-4c48-935d-97425ba80209"});
 const app = express();
 app.use(bodyParser.json()); // HubSpot webhook sends JSON
@@ -59,7 +59,7 @@ app.get('/oauth/callback', async (req, res) => {
         // } else {
         //     res.status(500).send('Workflow extension registration failed, check logs.');
         // }
-         res.status(200).send('App installed. Check logs for details.');
+         res.status(200).send('App installed. Check logs for details.', { accessToken, refreshToken });
     } catch (error) {
         console.error('OAuth failed', error.response?.data || error.message);
         res.status(500).send("OAuth failed: " + (error.response?.data?.message || error.message));
@@ -465,14 +465,65 @@ async function registerWorkflowExtension(accessToken, appId) {
 //     }
 // }
 
+function singatureVerification(request) {
+  
+  const { url, method, body, headers, hostname } = request;
+
+  // Parse headers needed to validate signature
+  const signatureHeader = headers['x-hubspot-signature-v3'];
+  const timestampHeader = headers['x-hubspot-request-timestamp'];
+
+  // Validate timestamp
+  const MAX_ALLOWED_TIMESTAMP = 300000; // 5 minutes in milliseconds
+  const currentTime = Date.now();
+  if (currentTime - timestampHeader > MAX_ALLOWED_TIMESTAMP) {
+    console.log('Timestamp is invalid, reject request');
+    // Add any rejection logic here
+  }
+
+  // Concatenate request method, URI, body, and header timestamp
+  const uri = `https://${hostname}${url}`;
+  const rawString = `${method}${uri}${JSON.stringify(body)}${timestampHeader}`;
+
+  // Create HMAC SHA-256 hash from resulting string above, then base64-encode it
+  const hashedString = crypto
+    .createHmac('sha256', process.env.CLIENT_SECRET)
+    .update(rawString)
+    .digest('base64');
+
+  // Validate signature: compare computed signature vs. signature in header
+  if (
+    crypto.timingSafeEqual(
+      Buffer.from(hashedString),
+      Buffer.from(signatureHeader)
+    )
+  ) {
+    console.log('Signature matches! Request is valid.');
+    return true; // Signature is valid, proceed with request processing
+    // Proceed with any request processing as needed.
+  } else {
+    console.log('Signature does not match: request is invalid');
+    return res.status(401).json({ error: 'Unauthorized' });
+    // Add any rejection logic here.
+  }
+}
+
+
+
 // Example webhook handler
 // https://hubspotapi.onrender.com/workflow/trigger
 app.post('/workflow/trigger', async (req, res) => {
     // You must use bodyParser to parse JSON, as above!
     const { inputs, objectId: contactId } = req.body[0]; 
     // Modern HubSpot uses objectId for contact!
-    console.log('Workflow trigger received:', req.body, req.body.inputs, req.body.objectId, req.body.inputs, req.body.objectId);
+    
     // In production, fetch stored tokens and keys for the portal/user!
+    const isValid = singatureVerification(req);
+    if (!isValid) {
+        console.log('Invalid signature, rejecting request');
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
     try {
         // 1. Fetch contact details (tokens, phone, etc.)
         const contact = await axios.get(
